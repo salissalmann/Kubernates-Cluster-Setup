@@ -1,0 +1,18 @@
+#API version is the version of the Kubernetes API that we want to use to create the object.
+apiVersion: v1
+#Kind is the type of object that we want to create.
+kind: Pod
+#Metadata contains information that helps identify the object.
+metadata:
+  name: nginx-pod
+  labels:
+    team: devops
+    app: nginx
+
+#Spec is the desired state of the object.
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx:latest
+    ports:
+    - containerPort: 80
