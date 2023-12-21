@@ -1,0 +1,31 @@
+#Same as replica set but with more features like rolling updates, rollbacks, etc.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+
+#When is rollback and rollout triggered?
+#Lets say we have a deployment with 3 replicas and we want to update the image from nginx:latest to nginx:1.16.1
+#We update the image in the deployment file and run kubectl apply -f nginx-deployment.yaml
+#The rollout is triggered and the new image is deployed to the pods one by one.
+#If the new image is not working as expected, we can rollback to the previous version by running kubectl rollout undo deployment nginx-deployment
+#The rollback is triggered and the previous image is deployed to the pods one by one.
+#If we want to see the rollout history, we can run kubectl rollout history deployment nginx-deployment
+#If we want to see the rollout status, we can run kubectl rollout status deployment nginx-deployment
+#If we want to see the rollout status in real time, we can run kubectl rollout status deployment nginx-deployment --watch
+#If we want to see the rollout status in real time with the revision number, we can run kubectl rollout status deployment nginx-deployment --watch --revision=1
