@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  type: ClusterIP
+  selector:
+    app: nginx     #Match the label of the pods that was created by the deployment [nginx-deployment.yaml] [Match the label of the pods that was created by the replica set [nginx-replicasets.yaml] [Match Label to be precise]
+  ports:
+  - protocol: TCP
+    port: 8082        #The port on the service
+    targetPort: 80    #The port on the container as nginx is listening on port 80
+    #ClusterIP: -> The IP address of the service inside the cluster [default]
+      #Used by other applications inside the cluster to access the service
+    #NodePort: -> The port on the node
+      #Used by other applications outside the cluster to access the service
+    #LoadBalancer: -> The port on the load balancer
+      #Used by the load balancer to distribute the traffic to the nodes
+    
