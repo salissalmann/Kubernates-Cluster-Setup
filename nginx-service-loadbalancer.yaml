@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx     
+  ports:
+  - protocol: TCP
+    port: 8082        
+    targetPort: 80   
+    nodePort: 30008  #Range: 30000-32767
+
+#How is Load Balancer implemented?
+#Cloud Provider Load Balancer:
+#  - The cloud provider creates a load balancer and configures it to distribute the traffic to the nodes
+#  - The cloud provider creates a firewall rule to allow the traffic to the load balancer
+
+#MetalLB:
+#  - MetalLB creates a load balancer and configures it to distribute the traffic to the nodes
+#  - MetalLB creates a firewall rule to allow the traffic to the load balancer
+
+#How LoadBalancer and NodePort are different?
+#LoadBalancer:
+#  - The load balancer is created, configured and managed by the cloud provider
+#  - The load balancer is not created if the cloud provider is not available
+
+#How to access it?
+# "minikube service nginx-service"
+# deployment should be running [nginx-deployment.yaml]
