@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  mongodb:
+    image: mongo:latest
+    volumes:
+      - mongodb-data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=examplePassword
+    networks:
+      - backend-network
+
+  # Node.js Backend Service
+  backend:
+    image: your-node-backend-image:latest
+    environment:
+      - MONGO_URI=mongodb://root:examplePassword@mongodb:27017/your-database-name
+    ports:
+      - "3001:3001"
+    networks:
+      - backend-network
+    depends_on:
+      - mongodb
+    init: true # Wait for MongoDB to be ready before starting the backend service
+
+  # React Frontend Service
+  frontend:
+    image: your-react-frontend-image:latest
+    environment:
+      - REACT_APP_BACKEND_URL=http://backend:3001
+    ports:
+      - "3000:3000"
+    networks:
+      - frontend-network
+    depends_on:
+      - backend
+    init: true # Wait for the backend service to be ready before starting the frontend service
+
+networks:
+  backend-network:
+  frontend-network:
+
+volumes:
+  mongodb-data:
+    driver_opts:
+      type: s3
+      size: 30Gi
+      bucket: your-s3-bucket-name
+      region: your-s3-region
+      endpoint: your-s3-endpoint
+      path: /mongodb-data

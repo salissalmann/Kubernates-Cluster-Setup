@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: apache-namespace
+  name: apache-pod
+  labels:
+    team: apache
+    app: nginx
+
+spec:
+  containers:
+  - name: apache-container
+    image: httpd
+    ports:
+    - containerPort: 80
+  volumes:
+  - name: apache-persistent-storage
